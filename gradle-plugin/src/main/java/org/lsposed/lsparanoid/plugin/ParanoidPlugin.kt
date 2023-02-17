@@ -38,7 +38,7 @@ class ParanoidPlugin : Plugin<Project> {
                 it.onVariants { variant ->
                     if (!extension.enabled) return@onVariants
                     val task = project.tasks.register(
-                        "paranoid${variant.name.replaceFirstChar { it.uppercase() }}",
+                        "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
                         ParanoidTask::class.java
                     ) {
                         it.bootClasspath.addAll(project.extensions.getByType(BaseExtension::class.java).bootClasspath)
