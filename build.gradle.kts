@@ -8,7 +8,7 @@ allprojects {
 
     val asmVersion by extra("9.2")
     val gripVersion by extra("0.8.1")
-    val logbackVersion by extra("1.2.7")
+    val logbackVersion by extra("1.4.5")
 
     val junitVersion by extra("4.13.2")
 
