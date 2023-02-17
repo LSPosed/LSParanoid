@@ -18,12 +18,12 @@ buildscript {
   }
 
   dependencies {
-    classpath 'io.michaelrocks:paranoid-gradle-plugin:0.3.7'
+    classpath 'org.lsposed.lsparanoid:gradle-plugin:0.4.0'
   }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'io.michaelrocks.paranoid'
+apply plugin: 'org.lsposed.lsparanoid'
 ```
 
 Now you can just annotate classes with strings that need to be obfuscated with `@Obfuscate`.
@@ -31,9 +31,9 @@ After you project compiles every string in annotated classes will be obfuscated.
 
 Configuration
 -------------
-Paranoid plugin can be configured using `paranoid` extension object:
+Paranoid plugin can be configured using `lsparanoid` extension object:
 ```groovy
-paranoid {
+lsparanoid {
   // ...
 }
 
@@ -41,9 +41,8 @@ paranoid {
 
 The extension object contains the following properties:
 - `enabled` — `boolean`. Allows to disable obfuscation for the project. Default value is `true`.
-- `cacheable` — `boolean`. Allows to enable caching for the transform. Default value is `false`.
-- `includeSubprojects` — `boolean`. Allows to enable obfuscation for subprojects. Default value is `false`.
-- `obfuscationSeed` - `Integer`. A seed that can be used to make obfuscation stable across builds. Default value is `null`, which means that the seed
+- `includeDependencies` — `boolean`. Allows to enable obfuscation for subprojects. Default value is `false`.
+- `seed` - `Integer`. A seed that can be used to make obfuscation stable across builds. Default value is `null`, which means that the seed
   is computed from input files on each build.
 
 How it works
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 License
 =======
     Copyright 2021 Michael Rozumyanskiy
+    Copyright 2023 LSPosed
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

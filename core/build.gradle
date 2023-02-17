@@ -1,9 +1,0 @@
-apply plugin: 'java'
-apply from: "$rootDir/pablo.gradle"
-
-sourceCompatibility = javaVersion
-targetCompatibility = javaVersion
-
-jar {
-  destinationDirectory.set(file('build/jar'))
-}
