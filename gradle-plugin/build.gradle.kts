@@ -16,6 +16,12 @@ java {
     sourceCompatibility = javaVersion
 }
 
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion.majorVersion))
+    }
+}
+
 dependencies {
     implementation(project(":core"))
     compileOnly(gradleApi())

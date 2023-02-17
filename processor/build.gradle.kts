@@ -17,6 +17,12 @@ java {
     targetCompatibility = javaVersion
 }
 
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion.majorVersion))
+    }
+}
+
 dependencies {
     implementation(project(":core"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
