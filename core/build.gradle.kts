@@ -9,6 +9,9 @@ val javaVersion: JavaVersion by extra
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {

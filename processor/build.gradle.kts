@@ -15,6 +15,9 @@ val androidToolsVersion: String by extra
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 kotlin {

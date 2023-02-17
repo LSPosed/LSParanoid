@@ -1,3 +1,4 @@
+import com.android.build.gradle.tasks.SourceJarTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val androidToolsVersion: String by extra
@@ -14,6 +15,9 @@ plugins {
 java {
     targetCompatibility = javaVersion
     sourceCompatibility = javaVersion
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 kotlin {
@@ -61,6 +65,10 @@ sourceSets {
 }
 
 tasks.withType(KotlinCompile::class.java) {
+    dependsOn(genTask)
+}
+
+tasks.withType(Jar::class.java) {
     dependsOn(genTask)
 }
 
