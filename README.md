@@ -1,4 +1,4 @@
-[![Build](https://github.com/MichaelRocks/paranoid/actions/workflows/build.yml/badge.svg)](https://github.com/MichaelRocks/paranoid/actions/workflows/build.yml)
+[![Build](https://github.com/LSPosed/LSParanoid/actions/workflows/build.yml/badge.svg)](https://github.com/MichaelRocks/paranoid/actions/workflows/build.yml)
 
 Paranoid
 ========
