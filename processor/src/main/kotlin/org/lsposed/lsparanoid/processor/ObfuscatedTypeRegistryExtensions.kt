@@ -24,13 +24,15 @@ import com.joom.grip.mirrors.Typed
 import com.joom.grip.objectType
 
 fun newObfuscatedTypeRegistry(classRegistry: ClassRegistry): ObfuscatedTypeRegistry {
-  return ObfuscatedTypeRegistryImpl(classRegistry)
+    return ObfuscatedTypeRegistryImpl(classRegistry)
 }
 
 fun ObfuscatedTypeRegistry.withCache(): ObfuscatedTypeRegistry {
-  return this as? CachedObfuscatedTypeRegistry ?: CachedObfuscatedTypeRegistry(this)
+    return this as? CachedObfuscatedTypeRegistry ?: CachedObfuscatedTypeRegistry(this)
 }
 
 fun ObfuscatedTypeRegistry.shouldObfuscate(global: Boolean): (Grip, Typed<Type.Object>) -> Boolean {
-  return objectType { _, type -> global || shouldObfuscate(type) }
+    return objectType { grip, type ->
+        grip.fileRegistry.findFileForType(type) != null && (global || shouldObfuscate(type))
+    }
 }

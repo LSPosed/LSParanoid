@@ -18,6 +18,7 @@
 package org.lsposed.lsparanoid.processor
 
 import com.joom.grip.ClassRegistry
+import com.joom.grip.FileRegistry
 import com.joom.grip.io.FileSource
 import com.joom.grip.mirrors.Type
 import com.joom.grip.mirrors.getObjectTypeByInternalName
@@ -36,6 +37,7 @@ class Patcher(
     private val stringRegistry: StringRegistry,
     private val analysisResult: AnalysisResult,
     private val classRegistry: ClassRegistry,
+    private val fileRegistry: FileRegistry,
     private val asmApi: Int,
 ) {
 
@@ -91,7 +93,8 @@ class Patcher(
         val reader = ClassReader(source.readFile(name))
         val writer = StandaloneClassWriter(
             ClassWriter.COMPUTE_MAXS or ClassWriter.COMPUTE_FRAMES,
-            classRegistry
+            classRegistry,
+            fileRegistry
         )
         val shouldObfuscateLiterals = reader.access and Opcodes.ACC_INTERFACE == 0
         val patcher =

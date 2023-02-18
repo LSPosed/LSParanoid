@@ -64,10 +64,11 @@ class ParanoidProcessor(
                 stringRegistry,
                 analysisResult,
                 grip.classRegistry,
+                grip.fileRegistry,
                 asmApi
             ).copyAndPatchClasses(sources, output)
             val deobfuscatorBytes =
-                DeobfuscatorGenerator(deobfuscator, stringRegistry, grip.classRegistry)
+                DeobfuscatorGenerator(deobfuscator, stringRegistry, grip.classRegistry, grip.fileRegistry)
                     .generateDeobfuscator()
             output.createFile("${deobfuscator.type.internalName}.class", deobfuscatorBytes)
         } finally {

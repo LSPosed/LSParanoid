@@ -19,14 +19,24 @@ package org.lsposed.lsparanoid.processor.commons
 import java.io.File
 import java.util.jar.JarEntry
 import java.util.jar.JarOutputStream
+import java.util.zip.ZipException
 
 internal fun JarOutputStream.createFile(name: String, data: ByteArray) {
-    putNextEntry(JarEntry(name.replace(File.separatorChar, '/')))
-    write(data)
-    closeEntry()
+    try {
+        putNextEntry(JarEntry(name.replace(File.separatorChar, '/')))
+        write(data)
+        closeEntry()
+    } catch (e: ZipException) {
+        // it's normal to have duplicated files in META-INF
+        if (!name.startsWith("META-INF")) throw e
+    }
 }
 
 internal fun JarOutputStream.createDirectory(name: String) {
-    putNextEntry(JarEntry(name.replace(File.separatorChar, '/')))
-    closeEntry()
+    try {
+        putNextEntry(JarEntry(name.replace(File.separatorChar, '/')))
+        closeEntry()
+    } catch (ignored: ZipException) {
+        // it's normal that the directory already exists
+    }
 }

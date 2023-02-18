@@ -18,6 +18,7 @@
 package org.lsposed.lsparanoid.processor
 
 import com.joom.grip.ClassRegistry
+import com.joom.grip.FileRegistry
 import com.joom.grip.mirrors.ClassMirror
 import com.joom.grip.mirrors.Type
 import com.joom.grip.mirrors.getObjectType
@@ -27,41 +28,63 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 
 class StandaloneClassWriter : ClassWriter {
-  private val logger = getLogger()
-  private val classRegistry: ClassRegistry
+    private val logger = getLogger()
+    private val classRegistry: ClassRegistry
+    private val fileRegistry: FileRegistry
 
-  constructor(flags: Int, classRegistry: ClassRegistry) : super(flags) {
-    this.classRegistry = classRegistry
-  }
-
-  constructor(classReader: ClassReader, flags: Int, classRegistry: ClassRegistry) : super(classReader, flags) {
-    this.classRegistry = classRegistry
-  }
-
-  override fun getCommonSuperClass(type1: String, type2: String): String {
-    val hierarchy = HashSet<Type>()
-    for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type1))) {
-      hierarchy.add(mirror.type)
+    constructor(
+        flags: Int,
+        classRegistry: ClassRegistry,
+        fileRegistry: FileRegistry
+    ) : super(flags) {
+        this.classRegistry = classRegistry
+        this.fileRegistry = fileRegistry
     }
 
-    for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type2))) {
-      if (mirror.type in hierarchy) {
-        logger.debug("[getCommonSuperClass]: {} & {} = {}", type1, type2, mirror.access)
-        return mirror.type.internalName
-      }
+    constructor(
+        classReader: ClassReader,
+        flags: Int,
+        classRegistry: ClassRegistry,
+        fileRegistry: FileRegistry
+    ) : super(classReader, flags) {
+        this.classRegistry = classRegistry
+        this.fileRegistry = fileRegistry
     }
 
-    logger.warn("[getCommonSuperClass]: {} & {} = NOT FOUND ", type1, type2)
-    return OBJECT_INTERNAL_NAME
-  }
+    override fun getCommonSuperClass(type1: String, type2: String): String {
+        val hierarchy = HashSet<Type>()
+        if (fileRegistry.findFileForType(getObjectTypeByInternalName(type1)) != null) {
+            for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type1))) {
+                hierarchy.add(mirror.type)
+            }
+        } else {
+            // compile only classes always assume java.lang.Object its superclass
+            hierarchy.add(OBJECT_TYPE)
+        }
 
-  private fun ClassRegistry.findClassHierarchy(type: Type.Object): Sequence<ClassMirror> {
-    return generateSequence(getClassMirror(type)) {
-      it.superType?.let { getClassMirror(it) }
+        if (fileRegistry.findFileForType(getObjectTypeByInternalName(type2)) != null) {
+            for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type2))) {
+                if (mirror.type in hierarchy) {
+                    logger.debug("[getCommonSuperClass]: {} & {} = {}", type1, type2, mirror.access)
+                    return mirror.type.internalName
+                }
+            }
+        } else {
+            // compile only classes always assume java.lang.Object as the common superclass
+            return OBJECT_INTERNAL_NAME
+        }
+
+        logger.warn("[getCommonSuperClass]: {} & {} = NOT FOUND ", type1, type2)
+        return OBJECT_INTERNAL_NAME
     }
-  }
 
-  companion object {
-    private val OBJECT_INTERNAL_NAME = getObjectType<Any>().internalName
-  }
+    private fun ClassRegistry.findClassHierarchy(type: Type.Object): Sequence<ClassMirror> {
+        return generateSequence(getClassMirror(type)) {
+            it.superType?.let { getClassMirror(it) }
+        }
+    }
+
+    companion object {
+        private val OBJECT_INTERNAL_NAME = getObjectType<Any>().internalName
+    }
 }

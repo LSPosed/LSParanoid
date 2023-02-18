@@ -20,8 +20,8 @@ package org.lsposed.lsparanoid.plugin
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ScopedArtifacts
+import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
@@ -31,7 +31,7 @@ class ParanoidPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         extension = project.extensions.create("lsparanoid", ParanoidExtension::class.java)
-        project.plugins.withType(AndroidBasePlugin::class.java) { _ ->
+        project.plugins.withType(AppPlugin::class.java) { _ ->
             project.extensions.configure("androidComponents") { it: AndroidComponentsExtension<*, *, *> ->
                 it.onVariants { variant ->
                     if (!extension.enabled) return@onVariants
@@ -44,7 +44,7 @@ class ParanoidPlugin : Plugin<Project> {
                         it.seed.set(extension.seed)
                         it.global.set(extension.global)
                     }
-                    variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
+                    variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
                         .use(task).toTransform(
                             ScopedArtifact.CLASSES,
                             ParanoidTask::jars,

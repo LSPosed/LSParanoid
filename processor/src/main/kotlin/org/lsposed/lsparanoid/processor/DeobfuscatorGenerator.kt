@@ -18,6 +18,7 @@
 package org.lsposed.lsparanoid.processor
 
 import com.joom.grip.ClassRegistry
+import com.joom.grip.FileRegistry
 import com.joom.grip.mirrors.toAsmType
 import org.lsposed.lsparanoid.processor.model.Deobfuscator
 import org.objectweb.asm.ClassVisitor
@@ -31,11 +32,12 @@ import org.objectweb.asm.commons.Method
 class DeobfuscatorGenerator(
   private val deobfuscator: Deobfuscator,
   private val stringRegistry: StringRegistry,
-  private val classRegistry: ClassRegistry
+  private val classRegistry: ClassRegistry,
+  private val fileRegistry: FileRegistry
 ) {
 
   fun generateDeobfuscator(): ByteArray {
-    val writer = StandaloneClassWriter(ClassWriter.COMPUTE_MAXS or ClassWriter.COMPUTE_FRAMES, classRegistry)
+    val writer = StandaloneClassWriter(ClassWriter.COMPUTE_MAXS or ClassWriter.COMPUTE_FRAMES, classRegistry, fileRegistry)
     writer.visit(
       Opcodes.V1_6,
       ACC_PUBLIC or ACC_SUPER,
