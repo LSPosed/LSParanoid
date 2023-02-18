@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
 Credit
 ------
-LSParanoid was forked from https://github.com/MichaelRocks/paranoid. Credits to its original author Michael Rozumyanskiy.
+LSParanoid was forked from [Paranoid](https://github.com/MichaelRocks/paranoid). Credits to its original author Michael Rozumyanskiy.
 
 License
 =======
