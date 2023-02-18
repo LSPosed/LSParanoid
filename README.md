@@ -44,6 +44,7 @@ The extension object contains the following properties:
 - `includeDependencies` — `boolean`. Allows to enable obfuscation for subprojects. Default value is `false`.
 - `seed` - `Integer`. A seed that can be used to make obfuscation stable across builds. Default value is `null`, which means that the seed
   is computed from input files on each build.
+- `global` - `boolean`. If `true`, the obfuscation will be applied to all classes, not only annotated ones. Default value is `false`.
 
 How it works
 ------------

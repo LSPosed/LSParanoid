@@ -43,6 +43,7 @@ class ParanoidPlugin : Plugin<Project> {
                     ) {
                         it.bootClasspath.addAll(project.extensions.getByType(BaseExtension::class.java).bootClasspath)
                         it.seed.set(extension.seed)
+                        it.global.set(extension.global)
                     }
                     variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
                         .use(task).toTransform(

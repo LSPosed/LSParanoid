@@ -31,6 +31,6 @@ fun ObfuscatedTypeRegistry.withCache(): ObfuscatedTypeRegistry {
   return this as? CachedObfuscatedTypeRegistry ?: CachedObfuscatedTypeRegistry(this)
 }
 
-fun ObfuscatedTypeRegistry.shouldObfuscate(): (Grip, Typed<Type.Object>) -> Boolean {
-  return objectType { _, type -> shouldObfuscate(type) }
+fun ObfuscatedTypeRegistry.shouldObfuscate(global: Boolean): (Grip, Typed<Type.Object>) -> Boolean {
+  return objectType { _, type -> global || shouldObfuscate(type) }
 }

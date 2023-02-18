@@ -36,7 +36,8 @@ class ParanoidProcessor(
     private val output: JarOutputStream,
     private val bootClasspath: Collection<File>,
     private val asmApi: Int = Opcodes.ASM9,
-    private val projectName: String
+    private val projectName: String,
+    private val global: Boolean
 ) {
 
     private val logger = getLogger()
@@ -47,7 +48,7 @@ class ParanoidProcessor(
     fun process() {
         dumpConfiguration()
 
-        val analysisResult = Analyzer(grip).analyze(inputs)
+        val analysisResult = Analyzer(grip, global).analyze(inputs)
         analysisResult.dump()
 
         val deobfuscator = createDeobfuscator()

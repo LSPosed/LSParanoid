@@ -47,6 +47,9 @@ abstract class ParanoidTask : DefaultTask() {
     @get:Optional
     abstract val seed: Property<Int>
 
+    @get:Input
+    abstract val global: Property<Boolean>
+
     @TaskAction
     fun taskAction() {
         val inputs = jars.get() + dirs.get()
@@ -62,7 +65,8 @@ abstract class ParanoidTask : DefaultTask() {
                 inputs = inputs.map { it.asFile },
                 bootClasspath = bootClasspath.get(),
                 output = jarOutput,
-                projectName = "${project.rootProject.name}\$${project.name}"
+                projectName = "${project.rootProject.name}\$${project.name}",
+                global = global.get(),
             ).process()
         }
     }
