@@ -21,10 +21,9 @@ import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.BaseExtension
-import org.gradle.api.GradleException
+import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.UnknownDomainObjectException
 import org.gradle.api.plugins.JavaPlugin
 
 class ParanoidPlugin : Plugin<Project> {
@@ -32,8 +31,7 @@ class ParanoidPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         extension = project.extensions.create("lsparanoid", ParanoidExtension::class.java)
-
-        try {
+        project.plugins.withType(AndroidBasePlugin::class.java) { _ ->
             project.extensions.configure("androidComponents") { it: AndroidComponentsExtension<*, *, *> ->
                 it.onVariants { variant ->
                     if (!extension.enabled) return@onVariants
@@ -55,10 +53,6 @@ class ParanoidPlugin : Plugin<Project> {
                 }
             }
             project.addDependencies(getDefaultConfiguration())
-        } catch (exception: UnknownDomainObjectException) {
-            throw GradleException(
-                "Paranoid plugin must be applied *AFTER* Android plugin", exception
-            )
         }
     }
 

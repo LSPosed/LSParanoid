@@ -8,8 +8,7 @@ String obfuscator for Android applications.
 Usage
 -----
 In order to make Paranoid work with your project you have to apply the Paranoid Gradle plugin
-to the project. Please notice that the Paranoid plugin must be applied **after** the Android
-plugin.
+to the project.
 
 ```groovy
 buildscript {
@@ -18,7 +17,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'org.lsposed.lsparanoid:gradle-plugin:0.4.0'
+    classpath 'org.lsposed.lsparanoid:gradle-plugin:0.4.1'
   }
 }
 
