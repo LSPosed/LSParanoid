@@ -94,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
 
 ```
 
+Credit
+------
+LSParanoid was forked from https://github.com/MichaelRocks/paranoid. Credits to its original author Michael Rozumyanskiy.
+
 License
 =======
     Copyright 2021 Michael Rozumyanskiy
