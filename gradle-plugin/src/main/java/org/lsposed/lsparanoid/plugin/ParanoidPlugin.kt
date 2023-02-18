@@ -35,7 +35,7 @@ class ParanoidPlugin : Plugin<Project> {
             project.extensions.configure("androidComponents") { it: AndroidComponentsExtension<*, *, *> ->
                 it.onVariants { variant ->
                     if (!extension.enabled) return@onVariants
-                    if (!extension.variantsFilter(variant)) return@onVariants
+                    if (!extension.variantFilter(variant)) return@onVariants
                     val task = project.tasks.register(
                         "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
                         ParanoidTask::class.java

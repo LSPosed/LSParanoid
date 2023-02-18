@@ -17,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.lsposed.lsparanoid:gradle-plugin:0.4.3")
+        classpath("org.lsposed.lsparanoid:gradle-plugin:0.4.4")
         // classpath("com.android.tools.build:gradle")
     }
 }

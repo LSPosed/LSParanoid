@@ -23,5 +23,5 @@ open class ParanoidExtension {
   var enabled: Boolean = true
   var seed: Int? = null
   var global: Boolean = false
-  val variantsFilter: (Variant) -> Boolean = { true }
+  var variantFilter: (Variant) -> Boolean = { true }
 }
