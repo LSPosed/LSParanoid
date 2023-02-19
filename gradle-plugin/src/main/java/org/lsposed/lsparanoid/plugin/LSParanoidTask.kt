@@ -18,6 +18,7 @@ package org.lsposed.lsparanoid.plugin
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -42,9 +43,11 @@ abstract class LSParanoidTask : DefaultTask() {
     @get:OutputFile
     abstract val output: RegularFileProperty
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:Classpath
     abstract val bootClasspath: ListProperty<File>
+
+    @get:CompileClasspath
+    abstract var classpath: FileCollection
 
     @get:Input
     abstract val seed: Property<Int>
@@ -65,7 +68,7 @@ abstract class LSParanoidTask : DefaultTask() {
             ParanoidProcessor(
                 seed = seed.get(),
                 inputs = inputs.map { it.asFile.toPath() },
-                bootClasspath = bootClasspath.get().map { it.toPath() },
+                classpath = bootClasspath.get().map { it.toPath() }.toSet() + classpath.files.map { it.toPath() },
                 output = jarOutput,
                 projectName = "${project.rootProject.name}\$${project.name}",
                 global = global.get(),

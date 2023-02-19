@@ -77,7 +77,10 @@ class StandaloneClassWriter : ClassWriter {
     private fun ClassRegistry.getClassMirrorOrObject(type: Type.Object): ClassMirror? {
         return fileRegistry.findPathForType(type)?.let { _ ->
             getClassMirror(type)
-        } ?: getClassMirror(OBJECT_TYPE)
+        } ?: run {
+            logger.warn("[getClassMirrorOrObject]: {} not found", type)
+            getClassMirror(OBJECT_TYPE)
+        }
     }
 
     companion object {

@@ -33,7 +33,7 @@ import java.util.jar.JarOutputStream
 
 class ParanoidProcessor(
     seed: Int,
-    bootClasspath: Collection<Path>,
+    classpath: Set<Path>,
     private val inputs: List<Path>,
     private val output: JarOutputStream,
     private val asmApi: Int = Opcodes.ASM9,
@@ -43,7 +43,7 @@ class ParanoidProcessor(
 
     private val logger = getLogger()
 
-    private val grip: Grip = GripFactory.newInstance(asmApi).create(inputs + bootClasspath)
+    private val grip: Grip = GripFactory.newInstance(asmApi).create(classpath + inputs)
     private val stringRegistry = StringRegistryImpl(seed)
 
     fun process() {

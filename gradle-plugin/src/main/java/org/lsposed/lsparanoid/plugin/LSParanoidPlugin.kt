@@ -43,6 +43,7 @@ class LSParanoidPlugin : Plugin<Project> {
                         it.bootClasspath.addAll(project.extensions.getByType(BaseExtension::class.java).bootClasspath)
                         it.seed.set(extension.seed ?: SecureRandom().nextInt())
                         it.global.set(extension.global)
+                        it.classpath = variant.compileClasspath
                     }
                     variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
                         .use(task).toTransform(
