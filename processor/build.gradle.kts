@@ -1,16 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm")
     `maven-publish`
     signing
 }
 
 val javaVersion: JavaVersion by extra
-val asmVersion: String by extra
-val kotlinVersion: String by extra
-val gripVersion: String by extra
-val logbackVersion: String by extra
-val junitVersion: String by extra
-val androidToolsVersion: String by extra
 
 java {
     sourceCompatibility = javaVersion
@@ -27,29 +21,26 @@ kotlin {
 }
 
 dependencies {
+    compileOnly(gradleApi())
     implementation(project(":core"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("com.joom.grip:grip:$gripVersion")
-    implementation("org.ow2.asm:asm:$asmVersion")
-    implementation("org.ow2.asm:asm-commons:$asmVersion")
-    testImplementation("junit:junit:$junitVersion")
+    implementation("com.joom.grip:grip:0.8.1")
+    implementation("org.ow2.asm:asm-commons:9.4")
 }
 
 publishing {
     publications {
-        register<MavenPublication>("lsparanoid") {
-            artifactId = "processor"
+        register<MavenPublication>(rootProject.name) {
+            artifactId = project.name
             group = group
             version = version
+            from(components.getByName("java"))
             pom {
-                name.set("processor")
                 description.set("String obfuscator for Android applications")
                 url.set("https://github.com/LSPosed/LSParanoid")
                 licenses {
                     license {
                         name.set("Apache License 2.0")
-                        url.set("https://github.com/libxposed/service/blob/master/LICENSE")
+                        url.set("https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt")
                     }
                 }
                 developers {
@@ -62,9 +53,6 @@ publishing {
                     connection.set("scm:git:https://github.com/LSPosed/LSParanoid.git")
                     url.set("https://github.com/LSPosed/LSParanoid")
                 }
-            }
-            afterEvaluate {
-                from(components.getByName("java"))
             }
         }
     }
