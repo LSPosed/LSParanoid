@@ -28,7 +28,7 @@ kotlin {
 dependencies {
     implementation(project(":core"))
     implementation(project(":processor"))
-    compileOnly("com.android.tools.build:gradle:$androidToolsVersion")
+    compileOnly("com.android.tools.build:gradle-api:$androidToolsVersion")
 }
 
 val generatedDir = File(projectDir, "generated")

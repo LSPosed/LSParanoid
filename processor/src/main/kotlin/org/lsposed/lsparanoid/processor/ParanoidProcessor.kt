@@ -33,7 +33,7 @@ import java.util.jar.JarOutputStream
 
 class ParanoidProcessor(
     seed: Int,
-    classpath: Set<Path>,
+    classpath: Iterable<Path>,
     private val inputs: List<Path>,
     private val output: JarOutputStream,
     private val asmApi: Int = Opcodes.ASM9,
