@@ -31,6 +31,7 @@ import org.lsposed.lsparanoid.processor.ParanoidProcessor
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.file.Paths
 import java.util.jar.JarOutputStream
 
 @CacheableTask
@@ -65,8 +66,8 @@ abstract class ParanoidTask : DefaultTask() {
         ).use { jarOutput ->
             ParanoidProcessor(
                 seed = seed.get(),
-                inputs = inputs.map { it.asFile },
-                bootClasspath = bootClasspath.get(),
+                inputs = inputs.map { Paths.get(it.asFile.name) },
+                bootClasspath = bootClasspath.get().map { Paths.get(it.name) },
                 output = jarOutput,
                 projectName = "${project.rootProject.name}\$${project.name}",
                 global = global.get(),

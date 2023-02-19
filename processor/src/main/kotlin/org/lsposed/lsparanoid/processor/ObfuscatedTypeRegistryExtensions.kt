@@ -33,6 +33,6 @@ fun ObfuscatedTypeRegistry.withCache(): ObfuscatedTypeRegistry {
 
 fun ObfuscatedTypeRegistry.shouldObfuscate(global: Boolean): (Grip, Typed<Type.Object>) -> Boolean {
     return objectType { grip, type ->
-        grip.fileRegistry.findFileForType(type) != null && (global || shouldObfuscate(type))
+        grip.fileRegistry.findPathForType(type) != null && (global || shouldObfuscate(type))
     }
 }

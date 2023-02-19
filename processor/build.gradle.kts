@@ -23,7 +23,7 @@ kotlin {
 dependencies {
     compileOnly(gradleApi())
     implementation(project(":core"))
-    implementation("com.joom.grip:grip:0.8.1")
+    implementation("com.joom.grip:grip:0.9.1")
     implementation("org.ow2.asm:asm-commons:9.4")
 }
 

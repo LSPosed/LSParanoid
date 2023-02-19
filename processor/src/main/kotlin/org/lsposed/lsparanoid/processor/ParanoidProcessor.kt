@@ -21,20 +21,21 @@ import com.joom.grip.Grip
 import com.joom.grip.GripFactory
 import com.joom.grip.io.IoFactory
 import com.joom.grip.mirrors.getObjectTypeByInternalName
-import org.lsposed.lsparanoid.processor.commons.*
+import org.lsposed.lsparanoid.processor.commons.closeQuietly
+import org.lsposed.lsparanoid.processor.commons.createFile
 import org.lsposed.lsparanoid.processor.logging.getLogger
 import org.lsposed.lsparanoid.processor.model.Deobfuscator
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
 import org.objectweb.asm.commons.Method
-import java.io.File
+import java.nio.file.Path
 import java.util.jar.JarOutputStream
 
 class ParanoidProcessor(
     seed: Int,
-    private val inputs: List<File>,
+    bootClasspath: Collection<Path>,
+    private val inputs: List<Path>,
     private val output: JarOutputStream,
-    private val bootClasspath: Collection<File>,
     private val asmApi: Int = Opcodes.ASM9,
     private val projectName: String,
     private val global: Boolean
@@ -68,7 +69,12 @@ class ParanoidProcessor(
                 asmApi
             ).copyAndPatchClasses(sources, output)
             val deobfuscatorBytes =
-                DeobfuscatorGenerator(deobfuscator, stringRegistry, grip.classRegistry, grip.fileRegistry)
+                DeobfuscatorGenerator(
+                    deobfuscator,
+                    stringRegistry,
+                    grip.classRegistry,
+                    grip.fileRegistry
+                )
                     .generateDeobfuscator()
             output.createFile("${deobfuscator.type.internalName}.class", deobfuscatorBytes)
         } finally {
@@ -92,8 +98,7 @@ class ParanoidProcessor(
             configurationsByType.forEach {
                 val (type, configuration) = it
                 logger.info("  {}:", type.internalName)
-                configuration.constantStringsByFieldName.forEach {
-                    val (field, string) = it
+                configuration.constantStringsByFieldName.forEach { (field, string) ->
                     logger.info("    {} = \"{}\"", field, string)
                 }
             }
