@@ -11,7 +11,7 @@ lsparanoid {
 android {
     namespace = "org.lsposed.paranoid.samples.application"
     compileSdk = 33
-
+    buildToolsVersion = "33.0.2"
     defaultConfig {
         applicationId = "org.lsposed.paranoid.samples.application"
         minSdk = 24
