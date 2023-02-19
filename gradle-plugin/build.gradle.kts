@@ -96,6 +96,7 @@ publishing {
             group = group
             version = version
             pom {
+                name.set(project.name)
                 description.set("String obfuscator for Android applications")
                 url.set("https://github.com/LSPosed/LSParanoid")
                 licenses {

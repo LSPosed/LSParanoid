@@ -22,6 +22,7 @@ publishing {
             version = version
             from(components.getByName("java"))
             pom {
+                name.set(project.name)
                 description.set("String obfuscator for Android applications")
                 url.set("https://github.com/LSPosed/LSParanoid")
                 licenses {
