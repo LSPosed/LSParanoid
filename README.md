@@ -23,6 +23,8 @@ pluginManagement {
 
 Now you can just annotate classes with strings that need to be obfuscated with `@Obfuscate`.
 After you project compiles every string in annotated classes will be obfuscated.
+**Note that you should use at least Java 17 to launch the gradle daemon for this plugin (this is also required by AGP 8+).**
+**The project that uses this plugin on the other hand does not necessarily to target Java 17.**
 
 Configuration
 -------------

@@ -48,3 +48,5 @@ jobs:
         with:
           name: ${{ matrix.os }}-samples
           path: samples/*/build/outputs
+      - name: Stop Gradle
+        run: ./gradlew --stop
