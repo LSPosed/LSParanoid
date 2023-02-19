@@ -52,16 +52,13 @@ class LSParanoidPlugin : Plugin<Project> {
                         LSParanoidTask::output,
                     )
             }
-            project.addDependencies(getDefaultConfiguration())
+            project.addDependencies()
         }
     }
 
-    private fun getDefaultConfiguration(): String {
-        return JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
-    }
-
-    private fun Project.addDependencies(configurationName: String) {
+    private fun Project.addDependencies() {
         val version = Build.VERSION
+        val configurationName = JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
         dependencies.add(configurationName, "org.lsposed.lsparanoid:core:$version")
     }
 }

@@ -74,8 +74,7 @@ class ParanoidProcessor(
                     stringRegistry,
                     grip.classRegistry,
                     grip.fileRegistry
-                )
-                    .generateDeobfuscator()
+                ).generateDeobfuscator()
             output.createFile("${deobfuscator.type.internalName}.class", deobfuscatorBytes)
         } finally {
             sources.forEach { source ->
