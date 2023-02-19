@@ -10,6 +10,7 @@ Usage
 In order to make LSParanoid work with your project you have to apply the LSParanoid Gradle plugin
 to the project.
 
+The following is an example `settings.gradle.kts` to apply LSParanoid.
 ```kotlin
 pluginManagement {
   repositories {
@@ -23,13 +24,21 @@ pluginManagement {
 
 Now you can just annotate classes with strings that need to be obfuscated with `@Obfuscate`.
 After you project compiles every string in annotated classes will be obfuscated.
+
 **Note that you should use at least Java 17 to launch the gradle daemon for this plugin (this is also required by AGP 8+).**
-**The project that uses this plugin on the other hand does not necessarily to target Java 17.**
+The project that uses this plugin on the other hand does not necessarily to target Java 17.
 
 Configuration
 -------------
-Paranoid plugin can be configured using `lsparanoid` extension object:
+Paranoid plugin can be configured using `lsparanoid` extension object.
+
+The following is an example `build.gradle.kts` that configures `lsparanoid` extension object with default values.
 ```kotlin
+plugins {
+    id("org.lsposed.lsparanoid")
+    // other plugins...
+}
+
 lsparanoid {
   seed = null
   global = false
