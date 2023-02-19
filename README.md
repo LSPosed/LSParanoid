@@ -7,44 +7,37 @@ String obfuscator for Android applications.
 
 Usage
 -----
-In order to make Paranoid work with your project you have to apply the Paranoid Gradle plugin
+In order to make LSParanoid work with your project you have to apply the LSParanoid Gradle plugin
 to the project.
 
 ```kotlin
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath("org.lsposed.lsparanoid:gradle-plugin:0.4.5")
-        // classpath("com.android.tools.build:gradle")
-    }
-}
-
-plugins {
-    id("org.lsposed.lsparanoid")
-    id("com.android.application")
+pluginManagement {
+  repositories {
+    mavenCentral()
+  }
+  plugins {
+    id("org.lsposed.lsparanoid") version "0.4.5"
+  }
 }
 ```
 
 Now you can just annotate classes with strings that need to be obfuscated with `@Obfuscate`.
 After you project compiles every string in annotated classes will be obfuscated.
-Note that this plugin only applies with Android Gradle Plugin. You must either applies
-`com.android.application` at the mean time.
 
 Configuration
 -------------
 Paranoid plugin can be configured using `lsparanoid` extension object:
 ```kotlin
 lsparanoid {
-  // ...
+  seed = null
+  global = false
+  includeDependencies = false
+  variantFilter = { true }
 }
 
 ```
 
 The extension object contains the following properties:
-- `enabled` — `boolean`. Allows to disable obfuscation for the project. Default value is `true`.
 - `seed` - `Integer`. A seed that can be used to make obfuscation stable across builds. Default value is `null`, which means that the seed
   is computed from input files on each build.
 - `global` - `boolean`. If `true`, the obfuscation will be applied to all classes, not only annotated ones. Default value is `false`.
