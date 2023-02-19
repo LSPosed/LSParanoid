@@ -23,5 +23,6 @@ open class ParanoidExtension {
   var enabled: Boolean = true
   var seed: Int? = null
   var global: Boolean = false
+  var includeDependencies: Boolean = false
   var variantFilter: (Variant) -> Boolean = { true }
 }

@@ -53,25 +53,15 @@ class StandaloneClassWriter : ClassWriter {
 
     override fun getCommonSuperClass(type1: String, type2: String): String {
         val hierarchy = HashSet<Type>()
-        if (fileRegistry.findFileForType(getObjectTypeByInternalName(type1)) != null) {
-            for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type1))) {
-                hierarchy.add(mirror.type)
-            }
-        } else {
-            // compile only classes always assume java.lang.Object its superclass
-            hierarchy.add(OBJECT_TYPE)
+        for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type1))) {
+            hierarchy.add(mirror.type)
         }
 
-        if (fileRegistry.findFileForType(getObjectTypeByInternalName(type2)) != null) {
-            for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type2))) {
-                if (mirror.type in hierarchy) {
-                    logger.debug("[getCommonSuperClass]: {} & {} = {}", type1, type2, mirror.access)
-                    return mirror.type.internalName
-                }
+        for (mirror in classRegistry.findClassHierarchy(getObjectTypeByInternalName(type2))) {
+            if (mirror.type in hierarchy) {
+                logger.debug("[getCommonSuperClass]: {} & {} = {}", type1, type2, mirror.access)
+                return mirror.type.internalName
             }
-        } else {
-            // compile only classes always assume java.lang.Object as the common superclass
-            return OBJECT_INTERNAL_NAME
         }
 
         logger.warn("[getCommonSuperClass]: {} & {} = NOT FOUND ", type1, type2)
@@ -79,9 +69,15 @@ class StandaloneClassWriter : ClassWriter {
     }
 
     private fun ClassRegistry.findClassHierarchy(type: Type.Object): Sequence<ClassMirror> {
-        return generateSequence(getClassMirror(type)) {
-            it.superType?.let { getClassMirror(it) }
+        return generateSequence(getClassMirrorOrObject(type)) {
+            it.superType?.let { superType -> getClassMirrorOrObject(superType) }
         }
+    }
+
+    private fun ClassRegistry.getClassMirrorOrObject(type: Type.Object): ClassMirror? {
+        return fileRegistry.findFileForType(type)?.let { _ ->
+            getClassMirror(type)
+        } ?: getClassMirror(OBJECT_TYPE)
     }
 
     companion object {

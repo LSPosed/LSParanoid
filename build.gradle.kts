@@ -1,6 +1,6 @@
 allprojects {
     group = "org.lsposed.lsparanoid"
-    version = "0.4.4"
+    version = "0.4.5"
 
     val javaVersion by extra(JavaVersion.VERSION_11)
     val kotlinVersion by extra("1.8.0")
