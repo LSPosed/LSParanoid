@@ -19,9 +19,9 @@ package org.lsposed.lsparanoid.plugin
 
 import com.android.build.api.variant.Variant
 
-open class ParanoidExtension {
-  var seed: Int? = null
-  var global: Boolean = false
-  var includeDependencies: Boolean = false
-  var variantFilter: (Variant) -> Boolean = { true }
+open class LSParanoidExtension {
+    var seed: Int? = null
+    var global: Boolean = false
+    var includeDependencies: Boolean = false
+    var variantFilter: (Variant) -> Boolean = { true }
 }

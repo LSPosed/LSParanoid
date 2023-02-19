@@ -76,7 +76,7 @@ gradlePlugin {
     plugins {
         create(rootProject.name) {
             id = project.group as String
-            implementationClass = "org.lsposed.lsparanoid.plugin.ParanoidPlugin"
+            implementationClass = "org.lsposed.lsparanoid.plugin.LSParanoidPlugin"
         }
     }
 }

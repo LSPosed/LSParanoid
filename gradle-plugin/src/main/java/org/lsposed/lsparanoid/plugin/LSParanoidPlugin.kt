@@ -27,18 +27,18 @@ import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import java.security.SecureRandom
 
-class ParanoidPlugin : Plugin<Project> {
-    private lateinit var extension: ParanoidExtension
+class LSParanoidPlugin : Plugin<Project> {
+    private lateinit var extension: LSParanoidExtension
 
     override fun apply(project: Project) {
-        extension = project.extensions.create("lsparanoid", ParanoidExtension::class.java)
+        extension = project.extensions.create("lsparanoid", LSParanoidExtension::class.java)
         project.plugins.withType(BasePlugin::class.java) { _ ->
             project.extensions.configure("androidComponents") { it: AndroidComponentsExtension<*, *, *> ->
                 it.onVariants { variant ->
                     if (!extension.variantFilter(variant)) return@onVariants
                     val task = project.tasks.register(
                         "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
-                        ParanoidTask::class.java
+                        LSParanoidTask::class.java
                     ) {
                         it.bootClasspath.addAll(project.extensions.getByType(BaseExtension::class.java).bootClasspath)
                         it.seed.set(extension.seed ?: SecureRandom().nextInt())
@@ -47,9 +47,9 @@ class ParanoidPlugin : Plugin<Project> {
                     variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
                         .use(task).toTransform(
                             ScopedArtifact.CLASSES,
-                            ParanoidTask::jars,
-                            ParanoidTask::dirs,
-                            ParanoidTask::output,
+                            LSParanoidTask::jars,
+                            LSParanoidTask::dirs,
+                            LSParanoidTask::output,
                         )
                 }
             }

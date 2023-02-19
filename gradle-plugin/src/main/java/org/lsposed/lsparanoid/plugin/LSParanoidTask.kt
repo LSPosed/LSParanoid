@@ -30,7 +30,7 @@ import java.io.FileOutputStream
 import java.util.jar.JarOutputStream
 
 @CacheableTask
-abstract class ParanoidTask : DefaultTask() {
+abstract class LSParanoidTask : DefaultTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val jars: ListProperty<RegularFile>
