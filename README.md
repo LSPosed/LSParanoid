@@ -16,7 +16,7 @@ pluginManagement {
     mavenCentral()
   }
   plugins {
-    id("org.lsposed.lsparanoid") version "0.4.5"
+    id("org.lsposed.lsparanoid") version "0.5.0"
   }
 }
 ```

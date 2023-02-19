@@ -22,11 +22,7 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import org.lsposed.lsparanoid.processor.ParanoidProcessor
 import java.io.BufferedOutputStream
 import java.io.File
@@ -37,15 +33,18 @@ import java.util.jar.JarOutputStream
 @CacheableTask
 abstract class ParanoidTask : DefaultTask() {
     @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val jars: ListProperty<RegularFile>
 
     @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val dirs: ListProperty<Directory>
 
     @get:OutputFile
     abstract val output: RegularFileProperty
 
     @get:InputFiles
+    @get:PathSensitive(PathSensitivity.ABSOLUTE)
     abstract val bootClasspath: ListProperty<File>
 
     @get:Input
