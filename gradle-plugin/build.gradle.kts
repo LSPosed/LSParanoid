@@ -88,32 +88,43 @@ gradlePlugin {
     }
 }
 
+fun MavenPom.configPom() {
+    description.set("String obfuscator for Android applications")
+    url.set("https://github.com/LSPosed/LSParanoid")
+    licenses {
+        license {
+            name.set("Apache License 2.0")
+            url.set("https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt")
+        }
+    }
+    developers {
+        developer {
+            name.set("LSPosed")
+            url.set("https://lsposed.org")
+        }
+    }
+    scm {
+        connection.set("scm:git:https://github.com/LSPosed/LSParanoid.git")
+        url.set("https://github.com/LSPosed/LSParanoid")
+    }
+}
+
 publishing {
     publications {
-        val gradlePluginName = "pluginMaven" // https://github.com/gradle/gradle/issues/10384
-        register<MavenPublication>(gradlePluginName) {
-            artifactId = project.name
-            group = group
-            version = version
-            pom {
-                name.set(project.name)
-                description.set("String obfuscator for Android applications")
-                url.set("https://github.com/LSPosed/LSParanoid")
-                licenses {
-                    license {
-                        name.set("Apache License 2.0")
-                        url.set("https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt")
-                    }
+        // https://docs.gradle.org/current/userguide/java_gradle_plugin.html#maven_publish_plugin
+        val gradlePluginName = "pluginMaven"
+        val markerName = "${rootProject.name}PluginMarkerMaven"
+        afterEvaluate {
+            named<MavenPublication>(gradlePluginName) {
+                pom {
+                    name.set(project.name)
+                    configPom()
                 }
-                developers {
-                    developer {
-                        name.set("LSPosed")
-                        url.set("https://lsposed.org")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:https://github.com/LSPosed/LSParanoid.git")
-                    url.set("https://github.com/LSPosed/LSParanoid")
+            }
+            named<MavenPublication>(markerName) {
+                pom {
+                    name.set(rootProject.name)
+                    configPom()
                 }
             }
         }
