@@ -65,8 +65,8 @@ abstract class ParanoidTask : DefaultTask() {
         ).use { jarOutput ->
             ParanoidProcessor(
                 seed = seed.get(),
-                inputs = inputs.map { Paths.get(it.asFile.name) },
-                bootClasspath = bootClasspath.get().map { Paths.get(it.name) },
+                inputs = inputs.map { it.asFile.toPath() },
+                bootClasspath = bootClasspath.get().map { it.toPath() },
                 output = jarOutput,
                 projectName = "${project.rootProject.name}\$${project.name}",
                 global = global.get(),
