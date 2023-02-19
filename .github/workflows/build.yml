@@ -39,3 +39,13 @@ jobs:
         with:
           name: ${{ matrix.os }}-library
           path: ~/.m2
+      - name: Build samples
+        run: |
+          cd samples
+          ./gradlew :application:assembleRelease :application-global-obfuscate:assembleRelease :library:assembleRelease :library-may-obfuscate:assembleRelease :library-obfuscate:assembleRelease
+      - name: Upload samples
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-samples
+          path: samples/*/build/outputs
+
