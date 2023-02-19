@@ -21,9 +21,9 @@ import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import java.security.SecureRandom
 
@@ -32,7 +32,7 @@ class LSParanoidPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         extension = project.extensions.create("lsparanoid", LSParanoidExtension::class.java)
-        project.plugins.withType(BasePlugin::class.java) { _ ->
+        project.plugins.withType(AndroidBasePlugin::class.java) { _ ->
             project.extensions.configure("androidComponents") { it: AndroidComponentsExtension<*, *, *> ->
                 it.onVariants { variant ->
                     if (!extension.variantFilter(variant)) return@onVariants
