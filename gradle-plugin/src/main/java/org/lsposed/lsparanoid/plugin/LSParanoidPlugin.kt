@@ -20,7 +20,6 @@ package org.lsposed.lsparanoid.plugin
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ScopedArtifacts
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -39,11 +38,11 @@ class LSParanoidPlugin : Plugin<Project> {
                     val task = project.tasks.register(
                         "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
                         LSParanoidTask::class.java
-                    ) {
-                        it.bootClasspath.addAll(project.extensions.getByType(BaseExtension::class.java).bootClasspath)
-                        it.seed.set(extension.seed ?: SecureRandom().nextInt())
-                        it.global.set(extension.global)
-                        it.classpath = variant.compileClasspath
+                    ) { task ->
+                        task.bootClasspath.set(it.sdkComponents.bootClasspath)
+                        task.classpath = variant.compileClasspath
+                        task.seed.set(extension.seed ?: SecureRandom().nextInt())
+                        task.global.set(extension.global)
                     }
                     variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
                         .use(task).toTransform(
