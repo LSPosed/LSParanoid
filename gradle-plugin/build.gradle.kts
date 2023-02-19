@@ -51,7 +51,7 @@ val genTask = tasks.register("generateBuildClass") {
                /**
                 * The constant VERSION.
                 */
-               public static final String VERSION = "0.5.0";
+               public static final String VERSION = "$version";
             }""".trimIndent()
         )
     }
@@ -81,7 +81,7 @@ idea {
 
 gradlePlugin {
     plugins {
-        create(rootProject.name) {
+        register(rootProject.name) {
             id = project.group as String
             implementationClass = "org.lsposed.lsparanoid.plugin.LSParanoidPlugin"
         }
@@ -91,7 +91,7 @@ gradlePlugin {
 publishing {
     publications {
         val gradlePluginName = "pluginMaven" // https://github.com/gradle/gradle/issues/10384
-        create<MavenPublication>(gradlePluginName) {
+        register<MavenPublication>(gradlePluginName) {
             artifactId = project.name
             group = group
             version = version
