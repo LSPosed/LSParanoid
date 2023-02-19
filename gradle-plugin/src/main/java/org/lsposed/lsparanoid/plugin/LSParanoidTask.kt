@@ -61,6 +61,7 @@ abstract class LSParanoidTask : DefaultTask() {
                 )
             )
         ).use { jarOutput ->
+
             ParanoidProcessor(
                 seed = seed.get(),
                 inputs = inputs.map { it.asFile.toPath() },
