@@ -16,20 +16,24 @@
 
 package org.lsposed.lsparanoid.plugin
 
-import org.lsposed.lsparanoid.processor.ParanoidProcessor
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.TaskAction
+import org.lsposed.lsparanoid.processor.ParanoidProcessor
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.security.SecureRandom
 import java.util.jar.JarOutputStream
 
+@CacheableTask
 abstract class ParanoidTask : DefaultTask() {
     @get:InputFiles
     abstract val jars: ListProperty<RegularFile>
@@ -44,7 +48,6 @@ abstract class ParanoidTask : DefaultTask() {
     abstract val bootClasspath: ListProperty<File>
 
     @get:Input
-    @get:Optional
     abstract val seed: Property<Int>
 
     @get:Input
@@ -61,7 +64,7 @@ abstract class ParanoidTask : DefaultTask() {
             )
         ).use { jarOutput ->
             ParanoidProcessor(
-                seed = calculateSeed(),
+                seed = seed.get(),
                 inputs = inputs.map { it.asFile },
                 bootClasspath = bootClasspath.get(),
                 output = jarOutput,
@@ -70,7 +73,4 @@ abstract class ParanoidTask : DefaultTask() {
             ).process()
         }
     }
-
-    private fun calculateSeed() = seed.orNull ?: SecureRandom().nextInt()
 }
-

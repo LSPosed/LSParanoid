@@ -25,6 +25,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
+import java.security.SecureRandom
 
 class ParanoidPlugin : Plugin<Project> {
     private lateinit var extension: ParanoidExtension
@@ -40,7 +41,7 @@ class ParanoidPlugin : Plugin<Project> {
                         ParanoidTask::class.java
                     ) {
                         it.bootClasspath.addAll(project.extensions.getByType(BaseExtension::class.java).bootClasspath)
-                        it.seed.set(extension.seed)
+                        it.seed.set(extension.seed ?: SecureRandom().nextInt())
                         it.global.set(extension.global)
                     }
                     variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
