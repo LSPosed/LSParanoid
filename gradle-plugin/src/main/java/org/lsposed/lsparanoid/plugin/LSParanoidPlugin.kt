@@ -27,31 +27,29 @@ import org.gradle.api.plugins.JavaPlugin
 import java.security.SecureRandom
 
 class LSParanoidPlugin : Plugin<Project> {
-    private lateinit var extension: LSParanoidExtension
 
     override fun apply(project: Project) {
-        extension = project.extensions.create("lsparanoid", LSParanoidExtension::class.java)
+        val extension = project.extensions.create("lsparanoid", LSParanoidExtension::class.java)
         project.plugins.withType(AndroidBasePlugin::class.java) { _ ->
-            project.extensions.configure("androidComponents") { it: AndroidComponentsExtension<*, *, *> ->
-                it.onVariants { variant ->
-                    if (!extension.variantFilter(variant)) return@onVariants
-                    val task = project.tasks.register(
-                        "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
-                        LSParanoidTask::class.java
-                    ) { task ->
-                        task.bootClasspath.set(it.sdkComponents.bootClasspath)
-                        task.classpath = variant.compileClasspath
-                        task.seed.set(extension.seed ?: SecureRandom().nextInt())
-                        task.global.set(extension.global)
-                    }
-                    variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
-                        .use(task).toTransform(
-                            ScopedArtifact.CLASSES,
-                            LSParanoidTask::jars,
-                            LSParanoidTask::dirs,
-                            LSParanoidTask::output,
-                        )
+            val components = project.extensions.getByType(AndroidComponentsExtension::class.java)
+            components.onVariants { variant ->
+                if (!extension.variantFilter(variant)) return@onVariants
+                val task = project.tasks.register(
+                    "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
+                    LSParanoidTask::class.java
+                ) { task ->
+                    task.bootClasspath.set(components.sdkComponents.bootClasspath)
+                    task.classpath = variant.compileClasspath
+                    task.seed.set(extension.seed ?: SecureRandom().nextInt())
+                    task.global.set(extension.global)
                 }
+                variant.artifacts.forScope(if (extension.includeDependencies) ScopedArtifacts.Scope.ALL else ScopedArtifacts.Scope.PROJECT)
+                    .use(task).toTransform(
+                        ScopedArtifact.CLASSES,
+                        LSParanoidTask::jars,
+                        LSParanoidTask::dirs,
+                        LSParanoidTask::output,
+                    )
             }
             project.addDependencies(getDefaultConfiguration())
         }
