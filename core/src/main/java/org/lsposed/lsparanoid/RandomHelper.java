@@ -17,16 +17,31 @@
 
 package org.lsposed.lsparanoid;
 
+/**
+ * The type Random helper.
+ */
 public class RandomHelper {
   private RandomHelper() {
     // Cannot be instantiated.
   }
 
+  /**
+   * Seed long.
+   *
+   * @param x the x
+   * @return the long
+   */
   public static long seed(final long x) {
     final long z = (x ^ (x >>> 33)) * 0x62a9d9ed799705f5L;
     return ((z ^ (z >>> 28)) * 0xcb24d0a5c88c35b3L) >>> 32;
   }
 
+  /**
+   * Next long.
+   *
+   * @param state the state
+   * @return the long
+   */
   public static long next(final long state) {
     short s0 = (short) (state & 0xffff);
     short s1 = (short) ((state >>> 16) & 0xffff);

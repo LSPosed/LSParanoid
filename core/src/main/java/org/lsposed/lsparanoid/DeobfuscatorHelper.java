@@ -17,13 +17,26 @@
 
 package org.lsposed.lsparanoid;
 
+/**
+ * The type Deobfuscator helper.
+ */
 public class DeobfuscatorHelper {
+  /**
+   * The constant MAX_CHUNK_LENGTH.
+   */
   public static final int MAX_CHUNK_LENGTH = 0x1fff;
 
   private DeobfuscatorHelper() {
     // Cannot be instantiated.
   }
 
+  /**
+   * Gets string.
+   *
+   * @param id     the id
+   * @param chunks the chunks
+   * @return the string
+   */
   public static String getString(final long id, final String[] chunks) {
     long state = RandomHelper.seed(id & 0xffffffffL);
     state = RandomHelper.next(state);

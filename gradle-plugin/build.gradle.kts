@@ -42,10 +42,17 @@ val genTask = tasks.register("generateBuildClass") {
             File(generatedJavaSourcesDir, "org/lsposed/lsparanoid/plugin/Build.java")
         buildClassFile.parentFile.mkdirs()
         buildClassFile.writeText(
-            """package org.lsposed.lsparanoid.plugin;
-               |public class Build {
-               |   public static final String VERSION = "$version";
-               |}""".trimMargin()
+            """
+            package org.lsposed.lsparanoid.plugin;
+            /**
+             * The type Build.
+             */
+            public class Build {
+               /**
+                * The constant VERSION.
+                */
+               public static final String VERSION = "0.5.0";
+            }""".trimIndent()
         )
     }
 }
