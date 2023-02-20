@@ -60,6 +60,10 @@ The extension object contains the following properties:
             seed = 114514
             global = true
             true
+        } else if (variant.buildType == "release") {
+            seed = 1919810
+            global = false
+            true
         } else {
             false
         }
