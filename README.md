@@ -52,7 +52,19 @@ The extension object contains the following properties:
 - `seed` - `Integer`. A seed that can be used to make obfuscation stable across builds. Default value is `null`. Set it to non-null can make the obfuscation task cacheable.
 - `global` - `boolean`. If `true`, the obfuscation will be applied to all classes, not only annotated ones. Default value is `false`.
 - `includeDependencies` - `boolean`. If `true`, the obfuscation will be applied to all dependencies. Default value is `false`.
-- `variantFilter` - `(Variant) -> boolean`. Allows to filter out variants that should be obfuscated. Default value always returns `true`. Note that you can set `seed`, `global` and `includeDependencies` dynamically for each variant in `variantFilter`.
+- `variantFilter` - `(Variant) -> boolean`. Allows to filter out variants that should be obfuscated. Default value always returns `true`. Note that you can set `seed`, `global` and `includeDependencies` dynamically for each variant in `variantFilter`. For example
+    ```kotlin
+    variantFilter = { variant -> 
+        // enable global obfuscate for globalObfuscate flavor release build
+        if (variant.flavorName == "globalObfuscate" && variant.buildType == "release") {
+            seed = 114514
+            global = true
+            true
+        } else {
+            false
+        }
+    }
+    ```
 
 How it works
 ------------
