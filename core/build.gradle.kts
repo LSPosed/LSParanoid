@@ -4,17 +4,7 @@ plugins {
     signing
 }
 
-val javaVersion: JavaVersion by extra
-
-java {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-
-    withJavadocJar()
-    withSourcesJar()
-}
-
-publishing {
+publish {
     publications {
         register<MavenPublication>(rootProject.name) {
             artifactId = project.name
@@ -44,28 +34,4 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "ossrh"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials(PasswordCredentials::class)
-        }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/LSPosed/LSParanoid")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-signing {
-    val signingKey = findProperty("signingKey") as String?
-    val signingPassword = findProperty("signingPassword") as String?
-    if (signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-    }
-    sign(publishing.publications)
 }

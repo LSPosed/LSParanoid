@@ -74,7 +74,7 @@ class StandaloneClassWriter : ClassWriter {
         }
     }
 
-    private fun ClassRegistry.getClassMirrorOrObject(type: Type.Object): ClassMirror? {
+    private fun ClassRegistry.getClassMirrorOrObject(type: Type.Object): ClassMirror {
         return fileRegistry.findPathForType(type)?.let { _ ->
             getClassMirror(type)
         } ?: run {

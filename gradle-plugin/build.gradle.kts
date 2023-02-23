@@ -1,34 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val androidToolsVersion: String by extra
-val javaVersion: JavaVersion by extra
-
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     idea
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
     `java-gradle-plugin`
     `maven-publish`
     signing
 }
 
-java {
-    targetCompatibility = javaVersion
-    sourceCompatibility = javaVersion
-
-    withJavadocJar()
-    withSourcesJar()
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion.majorVersion))
-    }
-}
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":processor"))
-    compileOnly("com.android.tools.build:gradle-api:$androidToolsVersion")
+    implementation(projects.core)
+    implementation(projects.processor)
+    compileOnly(libs.agp)
 }
 
 val generatedDir = File(projectDir, "generated")
@@ -79,78 +64,26 @@ idea {
     }
 }
 
-gradlePlugin {
-    plugins {
-        register(rootProject.name) {
-            id = project.group as String
-            implementationClass = "org.lsposed.lsparanoid.plugin.LSParanoidPlugin"
-        }
-    }
-}
-
-fun MavenPom.configPom() {
-    description.set("String obfuscator for Android applications")
-    url.set("https://github.com/LSPosed/LSParanoid")
-    licenses {
-        license {
-            name.set("Apache License 2.0")
-            url.set("https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt")
-        }
-    }
-    developers {
-        developer {
-            name.set("LSPosed")
-            url.set("https://lsposed.org")
-        }
-    }
-    scm {
-        connection.set("scm:git:https://github.com/LSPosed/LSParanoid.git")
+publish {
+    publishPlugin("$group", rootProject.name, "org.lsposed.lsparanoid.plugin.LSParanoidPlugin") {
+        name.set(rootProject.name)
+        description.set("String obfuscator for Android applications")
         url.set("https://github.com/LSPosed/LSParanoid")
-    }
-}
-
-publishing {
-    publications {
-        // https://docs.gradle.org/current/userguide/java_gradle_plugin.html#maven_publish_plugin
-        val gradlePluginName = "pluginMaven"
-        val markerName = "${rootProject.name}PluginMarkerMaven"
-        afterEvaluate {
-            named<MavenPublication>(gradlePluginName) {
-                pom {
-                    name.set(project.name)
-                    configPom()
-                }
-            }
-            named<MavenPublication>(markerName) {
-                pom {
-                    name.set(rootProject.name)
-                    configPom()
-                }
+        licenses {
+            license {
+                name.set("Apache License 2.0")
+                url.set("https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt")
             }
         }
-    }
-    repositories {
-        maven {
-            name = "ossrh"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials(PasswordCredentials::class)
-        }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/LSPosed/LSParanoid")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+        developers {
+            developer {
+                name.set("LSPosed")
+                url.set("https://lsposed.org")
             }
         }
+        scm {
+            connection.set("scm:git:https://github.com/LSPosed/LSParanoid.git")
+            url.set("https://github.com/LSPosed/LSParanoid")
+        }
     }
-}
-
-signing {
-    val signingKey = findProperty("signingKey") as String?
-    val signingPassword = findProperty("signingPassword") as String?
-    if (signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-    }
-    sign(publishing.publications)
 }

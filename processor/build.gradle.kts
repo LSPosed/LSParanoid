@@ -1,33 +1,18 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
     `maven-publish`
     signing
 }
 
-val javaVersion: JavaVersion by extra
-
-java {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-
-    withJavadocJar()
-    withSourcesJar()
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion.majorVersion))
-    }
-}
-
 dependencies {
     compileOnly(gradleApi())
-    implementation(project(":core"))
-    implementation("com.joom.grip:grip:0.9.1")
-    implementation("org.ow2.asm:asm-commons:9.4")
+    implementation(projects.core)
+    implementation(libs.grip)
+    implementation(libs.asm.common)
 }
 
-publishing {
+publish {
     publications {
         register<MavenPublication>(rootProject.name) {
             artifactId = project.name
@@ -57,28 +42,4 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "ossrh"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials(PasswordCredentials::class)
-        }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/LSPosed/LSParanoid")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-signing {
-    val signingKey = findProperty("signingKey") as String?
-    val signingPassword = findProperty("signingPassword") as String?
-    if (signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-    }
-    sign(publishing.publications)
 }

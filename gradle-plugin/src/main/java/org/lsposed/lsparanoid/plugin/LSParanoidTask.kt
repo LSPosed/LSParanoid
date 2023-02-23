@@ -28,9 +28,10 @@ import org.lsposed.lsparanoid.processor.ParanoidProcessor
 import java.io.BufferedOutputStream
 import java.io.FileOutputStream
 import java.util.jar.JarOutputStream
+import javax.inject.Inject
 
 @CacheableTask
-abstract class LSParanoidTask : DefaultTask() {
+abstract class LSParanoidTask @Inject constructor(private val projectName: String) : DefaultTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val jars: ListProperty<RegularFile>
@@ -70,7 +71,7 @@ abstract class LSParanoidTask : DefaultTask() {
                 classpath = bootClasspath.get().map { it.asFile.toPath() }
                     .toSet() + classpath.files.map { it.toPath() },
                 output = jarOutput,
-                projectName = "${project.rootProject.name}\$${project.name}",
+                projectName = projectName,
                 global = global.get(),
             ).process()
         }
