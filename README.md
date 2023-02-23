@@ -3,7 +3,7 @@
 LSParanoid
 ========
 
-String obfuscator for Android applications.
+String obfuscator for Android applications. LSParanoid supports [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html).
 
 Usage
 -----
@@ -17,7 +17,7 @@ pluginManagement {
     mavenCentral()
   }
   plugins {
-    id("org.lsposed.lsparanoid") version "0.5.0"
+    id("org.lsposed.lsparanoid") version "0.5.1"
   }
 }
 ```
