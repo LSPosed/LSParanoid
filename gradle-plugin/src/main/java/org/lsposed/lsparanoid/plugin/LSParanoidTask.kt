@@ -31,7 +31,7 @@ import java.util.jar.JarOutputStream
 import javax.inject.Inject
 
 @CacheableTask
-abstract class LSParanoidTask @Inject constructor(private val projectName: String) : DefaultTask() {
+abstract class LSParanoidTask : DefaultTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val jars: ListProperty<RegularFile>
@@ -55,6 +55,9 @@ abstract class LSParanoidTask @Inject constructor(private val projectName: Strin
     @get:Input
     abstract val global: Property<Boolean>
 
+    @get:Input
+    abstract val projectName: Property<String>
+
     @TaskAction
     fun taskAction() {
         val inputs = jars.get() + dirs.get()
@@ -71,7 +74,7 @@ abstract class LSParanoidTask @Inject constructor(private val projectName: Strin
                 classpath = bootClasspath.get().map { it.asFile.toPath() }
                     .toSet() + classpath.files.map { it.toPath() },
                 output = jarOutput,
-                projectName = projectName,
+                projectName = projectName.get(),
                 global = global.get(),
             ).process()
         }

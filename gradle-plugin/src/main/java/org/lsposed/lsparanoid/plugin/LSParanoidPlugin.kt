@@ -35,19 +35,16 @@ class LSParanoidPlugin : Plugin<Project> {
             components.onVariants { variant ->
                 if (!extension.variantFilter(variant)) return@onVariants
                 val task = project.tasks.register(
-                    "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}",
-                    LSParanoidTask::class.java,
-                    "${project.rootProject.name}\$${project.name}"
-                )
-                task.configure { t ->
-                    t.bootClasspath.set(components.sdkComponents.bootClasspath)
-                    t.classpath = variant.compileClasspath
-                    t.seed.set(extension.seed ?: SecureRandom().nextInt())
-                    t.global.set(extension.global)
+                    "lsparanoid${variant.name.replaceFirstChar { it.uppercase() }}", LSParanoidTask::class.java
+                ) {
+                    it.bootClasspath.set(components.sdkComponents.bootClasspath)
+                    it.classpath = variant.compileClasspath
+                    it.seed.set(extension.seed ?: SecureRandom().nextInt())
+                    it.global.set(extension.global)
+                    it.projectName.set("${project.rootProject.name}\$${project.name}")
                 }
-                variant.artifacts
-                    .forScope(if (extension.includeDependencies) Scope.ALL else Scope.PROJECT)
-                    .use(task).toTransform(
+                variant.artifacts.forScope(if (extension.includeDependencies) Scope.ALL else Scope.PROJECT).use(task)
+                    .toTransform(
                         ScopedArtifact.CLASSES,
                         LSParanoidTask::jars,
                         LSParanoidTask::dirs,
