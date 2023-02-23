@@ -5,6 +5,7 @@ plugins {
 }
 
 publish {
+    githubRepo = "LSPosed/LSParanoid"
     publications {
         register<MavenPublication>(rootProject.name) {
             artifactId = project.name
