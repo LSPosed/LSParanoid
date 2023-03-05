@@ -13,7 +13,8 @@ plugins {
 dependencies {
     implementation(projects.core)
     implementation(projects.processor)
-    compileOnly(libs.agp)
+    implementation(libs.kotlin.api)
+    implementation(libs.agp.api)
 }
 
 val generatedDir = File(projectDir, "generated")
