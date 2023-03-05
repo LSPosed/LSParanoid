@@ -70,6 +70,9 @@ The extension object contains the following properties:
     }
     ```
 
+**For Kotlin Users**: LSParanoid does not support `makeConcatWithConstants` or `makeConcat` for now, so for people using Kotlin that generates these instructions, you can add `-Xstring-concat=inline` to the kotlin compile option for workaround.
+
+
 How it works
 ------------
 Let's say you have an `Activity` that contains some string you want to be obfuscated.
