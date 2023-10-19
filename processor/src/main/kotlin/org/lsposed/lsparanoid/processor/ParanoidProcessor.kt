@@ -38,7 +38,7 @@ class ParanoidProcessor(
     private val output: JarOutputStream,
     private val asmApi: Int = Opcodes.ASM9,
     private val projectName: String,
-    private val global: Boolean
+    private val classFilter: ((className: String) -> Boolean)?
 ) {
 
     private val logger = getLogger()
@@ -49,7 +49,7 @@ class ParanoidProcessor(
     fun process() {
         dumpConfiguration()
 
-        val analysisResult = Analyzer(grip, global).analyze(inputs)
+        val analysisResult = Analyzer(grip, classFilter).analyze(inputs)
         analysisResult.dump()
 
         val deobfuscator = createDeobfuscator()

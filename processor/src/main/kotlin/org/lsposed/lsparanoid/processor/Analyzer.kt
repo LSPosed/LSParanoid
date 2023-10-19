@@ -29,7 +29,7 @@ import com.joom.grip.mirrors.Type
 import com.joom.grip.withFieldInitializer
 import java.nio.file.Path
 
-class Analyzer(private val grip: Grip, private val global: Boolean) {
+class Analyzer(private val grip: Grip, private val classFilter: ((className: String) -> Boolean)?) {
   fun analyze(inputs: List<Path>): AnalysisResult {
     val typesToObfuscate = findTypesToObfuscate(inputs)
     val obfuscationConfigurationsByType = typesToObfuscate.associateBy(
@@ -41,7 +41,7 @@ class Analyzer(private val grip: Grip, private val global: Boolean) {
 
   private fun findTypesToObfuscate(inputs: List<Path>): Set<Type.Object> {
     val registry = newObfuscatedTypeRegistry(grip.classRegistry).withCache()
-    val query = grip select classes from inputs where registry.shouldObfuscate(global)
+    val query = grip select classes from inputs where registry.shouldObfuscate(classFilter)
     return query.execute().types.toHashSet()
   }
 

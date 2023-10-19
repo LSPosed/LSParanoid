@@ -4,7 +4,7 @@ plugins {
 }
 
 lsparanoid {
-    global = true
+    classFilter = { true }
     includeDependencies = true
     variantFilter = { variant -> variant.name == "release" }
 }
