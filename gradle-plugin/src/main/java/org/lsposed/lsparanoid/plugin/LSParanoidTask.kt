@@ -53,7 +53,8 @@ abstract class LSParanoidTask : DefaultTask() {
     abstract val seed: Property<Int>
 
     @get:Input
-    abstract val global: Property<Boolean>
+    @get:Optional
+    abstract var classFilter: ((className: String) -> Boolean)?
 
     @get:Input
     abstract val projectName: Property<String>
@@ -75,7 +76,7 @@ abstract class LSParanoidTask : DefaultTask() {
                     .toSet() + classpath.files.map { it.toPath() },
                 output = jarOutput,
                 projectName = projectName.get(),
-                global = global.get(),
+                classFilter = classFilter
             ).process()
         }
     }

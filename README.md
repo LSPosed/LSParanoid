@@ -42,7 +42,7 @@ plugins {
 
 lsparanoid {
   seed = null
-  global = false
+  classFilter = null
   includeDependencies = false
   variantFilter = { true }
 }
@@ -51,19 +51,19 @@ lsparanoid {
 
 The extension object contains the following properties:
 - `seed` - `Integer`. A seed that can be used to make obfuscation stable across builds. Default value is `null`. Set it to non-null can make the obfuscation task cacheable.
-- `global` - `boolean`. If `true`, the obfuscation will be applied to all classes, not only annotated ones. Default value is `false`.
+- `classFilter` - `(String) -> boolean`. If set, it allows to filter out classes that should be obfuscated. Use `classFilter = { true }` to turn on global obfuscation i.e. obfuscate all classes, not only annotated ones. Or apply a filter like `classFilter = { it.startsWith("com.example.") }` or `classFilter = { it != "module-info" }`. Default value is `null`.
 - `includeDependencies` - `boolean`. If `true`, the obfuscation will be applied to all dependencies. Default value is `false`.
-- `variantFilter` - `(Variant) -> boolean`. Allows to filter out variants that should be obfuscated. Default value always returns `true`. Note that you can set `seed`, `global` and `includeDependencies` dynamically for each variant in `variantFilter`. For example
+- `variantFilter` - `(Variant) -> boolean`. Allows to filter out variants that should be obfuscated. Default value always returns `true`. Note that you can set `seed`, `classFilter` and `includeDependencies` dynamically for each variant in `variantFilter`. For example
     ```kotlin
     variantFilter = { variant -> 
         // enable global obfuscate for globalObfuscate flavor release build
         if (variant.flavorName == "globalObfuscate" && variant.buildType == "release") {
             seed = 114514
-            global = true
+            classFilter = { true }
             true
         } else if (variant.buildType == "release") {
             seed = 1919810
-            global = false
+            classFilter = null
             true
         } else {
             false

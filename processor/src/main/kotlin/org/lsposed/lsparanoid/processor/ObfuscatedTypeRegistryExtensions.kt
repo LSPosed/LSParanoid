@@ -31,10 +31,10 @@ fun ObfuscatedTypeRegistry.withCache(): ObfuscatedTypeRegistry {
     return this as? CachedObfuscatedTypeRegistry ?: CachedObfuscatedTypeRegistry(this)
 }
 
-fun ObfuscatedTypeRegistry.shouldObfuscate(global: Boolean): (Grip, Typed<Type.Object>) -> Boolean {
+fun ObfuscatedTypeRegistry.shouldObfuscate(classFilter: ((className: String) -> Boolean)?): (Grip, Typed<Type.Object>) -> Boolean {
     return objectType { grip, type ->
         grip.fileRegistry.findPathForType(type) != null &&
         !type.className.startsWith("org.lsposed.lsparanoid.Deobfuscator") &&
-        (global || shouldObfuscate(type))
+        ((classFilter?.invoke(type.className) ?: false) || shouldObfuscate(type))
     }
 }
