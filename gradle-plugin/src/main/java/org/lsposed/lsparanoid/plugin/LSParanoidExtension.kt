@@ -21,8 +21,6 @@ import com.android.build.api.variant.Variant
 
 open class LSParanoidExtension {
     var seed: Int? = null
-    @Deprecated("Use 'classFilter: (String) -> Boolean'.")
-    var global: Boolean = false
     var classFilter: ((className: String) -> Boolean)? = null
     var includeDependencies: Boolean = false
     var variantFilter: (Variant) -> Boolean = { true }

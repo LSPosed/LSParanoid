@@ -11,7 +11,7 @@ plugins {
 
 allprojects {
     group = "org.lsposed.lsparanoid"
-    version = "0.5.2"
+    version = "0.6.0"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {

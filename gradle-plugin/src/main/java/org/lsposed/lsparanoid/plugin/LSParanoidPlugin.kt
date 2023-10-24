@@ -45,8 +45,7 @@ class LSParanoidPlugin : Plugin<Project> {
                     it.bootClasspath.set(components.sdkComponents.bootClasspath)
                     it.classpath = variant.compileClasspath
                     it.seed.set(extension.seed ?: SecureRandom().nextInt())
-                    @Suppress("DEPRECATION")
-                    it.classFilter = extension.classFilter ?: if (extension.global) { _ -> true} else null
+                    it.classFilter = extension.classFilter
                     it.projectName.set("${project.rootProject.name}\$${project.name}")
                 }
                 variant.artifacts.forScope(if (extension.includeDependencies) Scope.ALL else Scope.PROJECT).use(task)
