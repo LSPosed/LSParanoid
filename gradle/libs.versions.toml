@@ -1,0 +1,13 @@
+[versions]
+agp = "8.2.0"
+kotlin = "1.9.21"
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+lsplugin-publish = { id = "org.lsposed.lsplugin.publish", version = "1.1" }
+
+[libraries]
+agp-api = { group = "com.android.tools.build", name = "gradle-api", version.ref = "agp" }
+grip = { group = "com.joom.grip", name = "grip", version = "0.9.1" }
+asm-common = { group = "org.ow2.asm", name = "asm-commons", version = "9.4" }
+kotlin-api = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin-api", version.ref = "kotlin" }
