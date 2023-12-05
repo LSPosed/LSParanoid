@@ -68,24 +68,24 @@ idea {
 publish {
     githubRepo = "LSPosed/LSParanoid"
     publishPlugin("$group", rootProject.name, "org.lsposed.lsparanoid.plugin.LSParanoidPlugin") {
-        name.set(rootProject.name)
-        description.set("String obfuscator for Android applications")
-        url.set("https://github.com/LSPosed/LSParanoid")
+        name = rootProject.name
+        description = "String obfuscator for Android applications"
+        url = "https://github.com/LSPosed/LSParanoid"
         licenses {
             license {
-                name.set("Apache License 2.0")
-                url.set("https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt")
+                name = "Apache License 2.0"
+                url = "https://github.com/LSPosed/LSParanoid/blob/master/LICENSE.txt"
             }
         }
         developers {
             developer {
-                name.set("LSPosed")
-                url.set("https://lsposed.org")
+                name = "LSPosed"
+                url = "https://lsposed.org"
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/LSPosed/LSParanoid.git")
-            url.set("https://github.com/LSPosed/LSParanoid")
+            connection = "scm:git:https://github.com/LSPosed/LSParanoid.git"
+            url = "https://github.com/LSPosed/LSParanoid"
         }
     }
 }
