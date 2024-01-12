@@ -46,7 +46,7 @@ class LSParanoidPlugin : Plugin<Project> {
                     it.classpath = variant.compileClasspath
                     it.seed.set(extension.seed ?: SecureRandom().nextInt())
                     it.classFilter = extension.classFilter
-                    it.projectName.set("${project.rootProject.name}\$${project.name}")
+                    it.projectName.set("${project.rootProject.name}\$${project.path}")
                 }
                 variant.artifacts.forScope(if (extension.includeDependencies) Scope.ALL else Scope.PROJECT).use(task)
                     .toTransform(
