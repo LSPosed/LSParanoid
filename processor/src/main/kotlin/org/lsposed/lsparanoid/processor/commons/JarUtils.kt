@@ -27,8 +27,8 @@ internal fun JarOutputStream.createFile(name: String, data: ByteArray) {
         write(data)
         closeEntry()
     } catch (e: ZipException) {
-        // it's normal to have duplicated files in META-INF
-        if (!name.startsWith("META-INF")) throw e
+        // it's normal to have duplicated files in META-INF and duplicated module-info.class in root
+        if (!name.startsWith("META-INF") && name != "module-info.class") throw e
     }
 }
 
