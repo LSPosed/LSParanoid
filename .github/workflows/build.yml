@@ -19,12 +19,12 @@ jobs:
 
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
           fetch-depth: 0
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -35,7 +35,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.maven_pgp_signingKey }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.maven_pgp_signingPassword }}
       - name: Upload library
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-library
           path: ~/.m2
@@ -43,7 +43,7 @@ jobs:
         run: |
           ./gradlew :samples:application:assembleRelease :samples:application-global-obfuscate:assembleRelease :samples:library:assembleRelease :samples:library-may-obfuscate:assembleRelease :samples:library-obfuscate:assembleRelease
       - name: Upload samples
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-samples
           path: samples/*/build/outputs
