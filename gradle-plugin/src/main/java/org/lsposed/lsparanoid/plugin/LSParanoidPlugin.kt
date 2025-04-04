@@ -23,13 +23,9 @@ import com.android.build.api.variant.ScopedArtifacts.Scope
 import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.security.SecureRandom
 
 class LSParanoidPlugin : Plugin<Project> {
@@ -61,8 +57,8 @@ class LSParanoidPlugin : Plugin<Project> {
         project.tasks.withType(JavaCompile::class.java) {
             it.options.compilerArgs.add("-XDstringConcat=inline")
         }
-        project.tasks.withType(KotlinCompile::class.java) {
-            it.kotlinOptions.freeCompilerArgs += "-Xstring-concat=inline"
+        project.tasks.withType(KotlinCompilationTask::class.java) {
+            it.compilerOptions.freeCompilerArgs.add("-Xstring-concat=inline")
         }
     }
 
