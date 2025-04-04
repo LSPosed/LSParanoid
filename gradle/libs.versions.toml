@@ -2,7 +2,7 @@
 agp = "8.8.0"
 annotation = "1.9.1"
 lsparanoid = "0.6.0"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
