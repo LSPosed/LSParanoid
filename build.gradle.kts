@@ -7,21 +7,16 @@ plugins {
     alias(libs.plugins.kotlin) apply false
 }
 
-
 allprojects {
     group = "org.lsposed.lsparanoid"
     version = "0.6.0"
 
-    plugins.withType(JavaPlugin::class.java) {
-        extensions.configure(JavaPluginExtension::class.java) {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
-        }
+    
+  // Configure Java to use our chosen language level. Kotlin will automatically pick this up.
+  // See https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
+  plugins.withType<JavaBasePlugin>().configureEach {
+    extensions.configure<JavaPluginExtension> {
+      toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
-
-    plugins.withType(KotlinBasePlugin::class.java) {
-        extensions.configure(KotlinJvmProjectExtension::class.java) {
-            jvmToolchain(17)
-        }
-    }
+  }
 }
