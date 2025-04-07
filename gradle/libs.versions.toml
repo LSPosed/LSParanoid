@@ -1,8 +1,8 @@
 [versions]
-agp = "8.8.0"
+agp = "8.9.1"
 annotation = "1.9.1"
 lsparanoid = "0.6.0"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -15,5 +15,5 @@ agp-api = { group = "com.android.tools.build", name = "gradle-api", version.ref 
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 lsparanoid-core = { group = "org.lsposed.lsparanoid", name = "core", version.ref = "lsparanoid" }
 grip = { group = "com.joom.grip", name = "grip", version = "0.9.1" }
-asm-common = { group = "org.ow2.asm", name = "asm-commons", version = "9.7.1" }
+asm-common = { group = "org.ow2.asm", name = "asm-commons", version = "9.8" }
 kotlin-api = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin-api", version.ref = "kotlin" }
