@@ -44,7 +44,7 @@ class ParanoidProcessor(
     private val logger = getLogger()
 
     private val grip: Grip = GripFactory.newInstance(asmApi).create(classpath + inputs)
-    private val stringRegistry = StringRegistryImpl(seed)
+    private val stringRegistryInstance = StringRegistryImpl(seed) // Renamed for clarity
 
     fun process() {
         dumpConfiguration()
@@ -62,7 +62,7 @@ class ParanoidProcessor(
         try {
             Patcher(
                 deobfuscator,
-                stringRegistry,
+                stringRegistryInstance,
                 analysisResult,
                 grip.classRegistry,
                 grip.fileRegistry,
@@ -71,7 +71,7 @@ class ParanoidProcessor(
             val deobfuscatorBytes =
                 DeobfuscatorGenerator(
                     deobfuscator,
-                    stringRegistry,
+                    stringRegistryInstance,
                     grip.classRegistry,
                     grip.fileRegistry
                 ).generateDeobfuscator()
@@ -80,6 +80,7 @@ class ParanoidProcessor(
             sources.forEach { source ->
                 source.closeQuietly()
             }
+            stringRegistryInstance.cleanup() // Call cleanup here
         }
     }
 

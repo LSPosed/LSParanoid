@@ -43,13 +43,18 @@ public class DeobfuscatorHelper {
     final long low = (state >>> 32) & 0xffff;
     state = RandomHelper.next(state);
     final long high = (state >>> 16) & 0xffff0000;
-    final int index = (int) ((id >>> 32) ^ low ^ high);
-    state = getCharAt(index, chunks, state);
+    // The 'id >>> 32' part is the obfuscated byte offset from StringRegistryImpl
+    // We need to divide by 2 to get the character offset, as each char was written as 2 bytes
+    final int byteOffset = (int) ((id >>> 32) ^ low ^ high);
+    final int charOffset = byteOffset / 2; // Convert byte offset to character offset
+
+    state = getCharAt(charOffset, chunks, state); // Use charOffset for the first lookup (length char)
     final int length = (int) ((state >>> 32) & 0xffffL);
     final char[] chars = new char[length];
 
     for (int i = 0; i < length; ++i) {
-      state = getCharAt(index + i + 1, chunks, state);
+      // Subsequent characters are sequentially located after the first one
+      state = getCharAt(charOffset + i + 1, chunks, state);
       chars[i] = (char) ((state >>> 32) & 0xffffL);
     }
 
@@ -57,6 +62,7 @@ public class DeobfuscatorHelper {
   }
 
   private static long getCharAt(final int charIndex, final String[] chunks, final long state) {
+    // charIndex is now correctly a character index within the conceptual full string
     final long nextState = RandomHelper.next(state);
     final String chunk = chunks[charIndex / MAX_CHUNK_LENGTH];
     return nextState ^ ((long) chunk.charAt(charIndex % MAX_CHUNK_LENGTH) << 32);
